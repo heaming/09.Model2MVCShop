@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -59,9 +60,11 @@ public class ProductController {
 	}
 
 	@RequestMapping(value="/addProduct", method=RequestMethod.POST, consumes= { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public String addProduct(HttpSession session, @MultipartForm("product") Product product, RedirectAttributes redirectAttributes, @RequestParam("multiFile") List<MultipartFile> files) throws Exception {
+	public String addProduct(HttpSession session, @ModelAttribute("product") Product product, RedirectAttributes redirectAttributes, @RequestParam("multiFile") List<MultipartFile> files) throws Exception {
 
 		System.out.println("/addProduct : POST");
+		
+		System.out.println(product);
 
 		User user = (User) session.getAttribute("user");
 		
@@ -75,7 +78,7 @@ public class ProductController {
 		// file
 		if (!files.isEmpty()) {
 						
-			String uploadPath = "C:\\Users\\bitcamp\\git\\07Model2MVCShop\\07.Model2MVCShop(URI,pattern)\\src\\main\\webapp\\images\\uploadFiles";
+			String uploadPath = "C:\\Users\\Çý¹Ì\\git\\https-github.com-heaming-09.Model2MVCShop\\09.Model2MVCShop(jQuery)\\src\\main\\webapp\\images\\uploadFiles";
 			
 			if(!new File(uploadPath).exists()) {
 				new File(uploadPath).mkdir();
