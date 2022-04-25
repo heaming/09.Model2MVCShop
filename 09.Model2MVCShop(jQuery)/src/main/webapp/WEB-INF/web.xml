@@ -56,7 +56,7 @@
 
 		<!-- :: Multifile 파일 업로드 설정 -->
 		<multipart-config>
-			<location>C:\Users\혜미\git\https-github.com-heaming-09.Model2MVCShop\09.Model2MVCShop(jQuery)\src\main\webapp\images\uploadFiles\</location>
+			<location>C:\Users\bitcamp\git\09.Model2MVCShop\09.Model2MVCShop(jQuery)\src\main\webapp\images\uploadFiles</location>
 			<!-- 업로드 되는 파일 저장 공간 -->
 			<max-file-size>20971520</max-file-size>
 			<!-- 업로드 되는 파일의 최대 크기 -->

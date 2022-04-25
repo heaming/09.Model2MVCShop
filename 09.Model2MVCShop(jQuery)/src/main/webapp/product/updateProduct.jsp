@@ -15,44 +15,58 @@
 <title>상품정보수정</title>
 <meta charset="EUC-KR">
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <script type="text/javascript" src="../javascript/calendar.js">
 </script>
 
 <script type="text/javascript">
-
-function fncUpdateProduct(){
-	//Form 유효성 검증
-	var prodNo = document.detailForm.prodNo.value;
- 	var name = document.detailForm.prodName.value;
-	var detail = document.detailForm.prodDetail.value;
-	var dueDate = document.detailForm.dueDate.value;
-	var price = document.detailForm.price.value;
-	var cost = document.detailForm.cost.value;
-
-	if(name == null || name.length<1){
-		alert("상품명은 반드시 입력하여야 합니다.");
-		return;
+	
+	// event ::  수정
+	$(function() {
+		$("td.ct_btn01:contains('수정')").on("click", function() {	fncUpdateProduct();	});
+	})
+	
+	
+	// event :: 취소
+	$(function() {
+		$("td.ct_btn01:contains('취소')").on("click", function() {	
+			history.go(-1);
+		});
+	})
+	
+	
+	// check val
+	function fncUpdateProduct(){
+		//Form 유효성 검증
+	 	var name = $("input[name='prodName']").val();
+		var detail = $("input[name='prodDetail']").val();
+		var dueDate = $("input[name='dueDate']").val();
+		var price = $("input[name='price']").val();
+		var cost = $("input[name='cost']").val();
+	
+		if(name == null || name.length<1){
+			alert("상품명은 반드시 입력하여야 합니다.");
+			return;
+		}
+		if(detail == null || detail.length<1){
+			alert("상품상세정보는 반드시 입력하여야 합니다.");
+			return;
+		}
+		if(dueDate == null || dueDate.length<1){
+			alert("유효기간은 반드시 입력하셔야 합니다.");
+			return;
+		}
+		if(price == null || price.length<1){
+			alert("판매가는 반드시 입력하셔야 합니다.");
+			return;
+		}
+		if(cost == null || cost.length<1){
+			alert("원가는 반드시 입력하셔야 합니다.");
+			return;
+		}
+			
+		$($("form")[0]).attr("method" , "POST").attr("action" , "/product/updateProduct").attr("enctype", "multipart/form-data").submit();
 	}
-	if(detail == null || detail.length<1){
-		alert("상품상세정보는 반드시 입력하여야 합니다.");
-		return;
-	}
-	if(dueDate == null || dueDate.length<1){
-		alert("유효기간은 반드시 입력하셔야 합니다.");
-		return;
-	}
-	if(price == null || price.length<1){
-		alert("판매가는 반드시 입력하셔야 합니다.");
-		return;
-	}
-	if(cost == null || cost.length<1){
-		alert("원가는 반드시 입력하셔야 합니다.");
-		return;
-	}
-		
-	document.detailForm.action='/product/updateProduct';
-	document.detailForm.submit();
-}
 
 
 </script>

@@ -78,7 +78,7 @@ public class ProductController {
 		// file
 		if (!files.isEmpty()) {
 						
-			String uploadPath = "C:\\Users\\Çý¹Ì\\git\\https-github.com-heaming-09.Model2MVCShop\\09.Model2MVCShop(jQuery)\\src\\main\\webapp\\images\\uploadFiles";
+			String uploadPath = "C:\\Users\\bitcamp\\git\\09.Model2MVCShop\\09.Model2MVCShop(jQuery)\\src\\main\\webapp\\images\\uploadFiles";
 			
 			if(!new File(uploadPath).exists()) {
 				new File(uploadPath).mkdir();
@@ -132,8 +132,8 @@ public class ProductController {
 	}
 
 	@RequestMapping(value="/listProduct")
-	public String listProduct(@ModelAttribute("search") Search search, @RequestParam("menu") String menu, Model model) throws Exception {
-
+	public String listProduct(@ModelAttribute("search") Search search,  Model model) throws Exception {
+//@RequestParam("menu") String menu,
 		System.out.println("/listProduct");
 
 		if(search.getCurrentPage() ==0 ){
@@ -151,7 +151,7 @@ public class ProductController {
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
-		model.addAttribute("menu", menu);
+		//model.addAttribute("menu", menu);
 
 		return "forward:/product/listProduct.jsp";
 	}
@@ -169,32 +169,38 @@ public class ProductController {
 		return "forward:/product/updateProduct.jsp";
 	}
 
-	@RequestMapping(value="/updateProduct", method=RequestMethod.POST)
-	public String updateProduct( @ModelAttribute("product") Product product, @RequestParam("menu") String menu, MultipartFile file) throws Exception {
+	@RequestMapping(value="/updateProduct", method=RequestMethod.POST, consumes= { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public String updateProduct( @ModelAttribute("product") Product product, @RequestParam("menu") String menu, @RequestParam("multiFile") List<MultipartFile> files) throws Exception {
 		
 		System.out.println("/updateProduct : POST");
 		
+		List<String> fileList = new ArrayList<String>();
+		
 		// file
-		if (!file.isEmpty()) {
+		if (!files.isEmpty()) {
 			
-			System.out.println(file);
-			
-			String fileName = file.getOriginalFilename();
-			
-			// String id = UUID.randomUUID().toString() + "_";
-			
-			String uploadPath = "C:\\Users\\bitcamp\\git\\07Model2MVCShop\\07.Model2MVCShop(URI,pattern)\\src\\main\\webapp\\images\\uploadFiles";
-			File target = new File(uploadPath, fileName);
+			String uploadPath = "C:\\Users\\bitcamp\\git\\09.Model2MVCShop\\09.Model2MVCShop(jQuery)\\src\\main\\webapp\\images\\uploadFiles";
 			
 			if(!new File(uploadPath).exists()) {
 				new File(uploadPath).mkdir();
 			}
-									
-			file.transferTo(target);
+				
+			for(MultipartFile file : files) {
+				
+				String fileName = file.getOriginalFilename();
+				
+				System.out.println(fileName);
+				
+				File target = new File(uploadPath, fileName);
+				file.transferTo(target);
+				
+				fileList.add(fileName);					
+			}
 			
-			//product.setFileName(fileName);						
+			String fileNames = String.join(",", fileList);
+			
+			product.setFileName(fileNames);	
 		}
-		
 		
 		productService.updateProduct(product);
 

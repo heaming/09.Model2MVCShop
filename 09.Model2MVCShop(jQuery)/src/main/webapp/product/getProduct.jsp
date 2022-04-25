@@ -1,23 +1,36 @@
 <%@ page contentType="text/html; charset=EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%--
-=====> EL / JSTL 적용으로 주석 처리
-<%@ page import="com.model2.mvc.service.domain.Product" %>
-
-<%
-	Product product = (Product)request.getAttribute("product");
-	String menu = request.getParameter("menu");
-%>	
-======
---%>
 <html>
 <head>
 <meta charset="EUC-KR">
 <title>상품상세조회</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script type="text/javascript">
 
+	// 확인
+	$(function() {
+		$( "td.ct_btn01:contains('확인')" ).on("click" , function() {
+			history.go(-1);
+		})
+	});
+
+	// 수정 || 구매
+	$(function() {
+		$("td.ct_btn01:contains('수정')" ).on("click" , function() {
+			console.log("수정");
+			self.location = "/product/updateProduct?prodNo=${product.prodNo}&menu=${menu}";
+		});
+		
+		$("td.ct_btn01:contains('구매')" ).on("click" , function() {
+			console.log("구매");	
+			self.location = "/product/addPurchase?prodNo=${product.prodNo}&menu=${menu}";
+		});
+	});
+
+</script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
@@ -116,13 +129,9 @@
 						<c:if test="${empty product.fileName}">
 							이미지 없음
 						</c:if>
-						
-						
 						<c:forEach items="${product.fileName}" var="file">
 							<img src="/images/uploadFiles/${file}"/>
 						</c:forEach>					
-						
-						<%-- <img src="/images/uploadFiles/${product.fileName}"/> --%>
 					</td>
 				</tr>
 			</table>
@@ -144,10 +153,10 @@
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
 						<c:if test="${user.userId.equals(product.sellerId)}">
-							<a href="/product/updateProduct?prodNo=${product.prodNo}&menu=${menu}">수정</a>
+							수정
 						</c:if>
 						<c:if test="${user.userId.equals(product.sellerId) == false}">
-							<a href="/product/addPurchase?prodNo=${product.prodNo}&menu=${menu}">구매</a>						
+							구매					
 						</c:if>
 					</td>
 					<td width="14" height="23">
@@ -158,8 +167,7 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23">
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-						<!-- <a href="javascript:history.go(-1);">확인</a> -->
-						<a href="/product/listProduct?menu=search;">확인</a>
+						확인
 					</td>
 					<td width="14" height="23"><img src="/images/ct_btnbg03.gif" width="14" height="23"></td>
 				</tr>
